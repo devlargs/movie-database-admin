@@ -1,4 +1,5 @@
-import { Box, Button, Flex, useColorMode } from '@chakra-ui/react';
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { Box, Flex, Text, useColorMode } from '@chakra-ui/react';
 import MenuLink from '@components/MenuLink';
 import DEFAULTS from '@styles/defaults';
 import Image from 'next/image';
@@ -36,11 +37,9 @@ const Navbar: FC = () => {
               </Flex>
             </Flex>
           </Box>
-          <Box>
-            <Button onClick={toggleColorMode} colorScheme="blue">
-              Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
-            </Button>
-          </Box>
+          <Text cursor="pointer" onClick={toggleColorMode} fontSize="2xl">
+            {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+          </Text>
         </Flex>
       </Box>
     </header>
