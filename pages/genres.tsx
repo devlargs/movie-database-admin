@@ -2,10 +2,10 @@ import { Text } from '@chakra-ui/react';
 import Container from '@components/Container';
 import { FC } from 'react';
 
-const Home: FC = () => (
+const Genres: FC = () => (
   <Container>
-    <Text>Movies</Text>
+    <Text>Genres</Text>
   </Container>
 );
 
-export default Home;
+export default Genres;
