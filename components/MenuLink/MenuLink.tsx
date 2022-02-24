@@ -8,7 +8,7 @@ const MenuLink: FC<MenuLinkProps> = ({ title, href }) => {
   return (
     <Box pr={4}>
       <Link href={href} passHref>
-        <Text cursor="pointer" transition="0.5s ease" fontSize="1.5rem" className="hover-underline-animation">
+        <Text cursor="pointer" transition="0.5s ease" fontSize="1.2rem" className="hover-underline-animation">
           {title}
         </Text>
       </Link>

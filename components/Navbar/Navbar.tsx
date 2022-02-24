@@ -6,13 +6,14 @@ import { FC } from 'react';
 
 const menuLinks = [
   {
-    title: 'Genres',
-    href: '/genres',
-  },
-  {
     title: 'Movies',
     href: '/',
   },
+  {
+    title: 'Genres',
+    href: '/genres',
+  },
+
   {
     title: 'Directors',
     href: '/directors',
