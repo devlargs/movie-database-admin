@@ -7,7 +7,7 @@ type MenuLinkProps = { title: string; href: string };
 const MenuLink: FC<MenuLinkProps> = ({ title, href }) => {
   return (
     <Box px={4}>
-      <Link href={href}>{title.replace(/./, (c) => c.toUpperCase())}</Link>
+      <Link href={href}>{title}</Link>
     </Box>
   );
 };

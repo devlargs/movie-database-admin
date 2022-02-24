@@ -11,11 +11,11 @@ const menuLinks = [
     href: '/genres',
   },
   {
-    title: 'movies',
+    title: 'Movies',
     href: '/',
   },
   {
-    title: 'directors',
+    title: 'Directors',
     href: '/directors',
   },
 ];
@@ -26,18 +26,25 @@ const Navbar: FC = () => {
   return (
     <header>
       <Box h={DEFAULTS.headerHeight} bg={colorMode === 'light' ? 'blue.100' : 'blue.900'}>
-        <Flex justifyContent="space-between" maxW={DEFAULTS.containerMaxWidth} m="auto" alignItems="center" h="100%">
+        <Flex
+          justifyContent="space-between"
+          maxW={DEFAULTS.containerMaxWidth}
+          px={DEFAULTS.containerPaddingX}
+          m="auto"
+          alignItems="center"
+          h="100%"
+        >
           <Box>
             <Flex alignItems="center">
               <Image src={`/images/logo-${colorMode}.png`} alt="Logo" width={130} height={28} />
               <Flex ml={4}>
                 {menuLinks.map((link) => (
-                  <MenuLink href={`/${link.href}`} title={link.title} key={link.href} />
+                  <MenuLink href={`${link.href}`} title={link.title} key={link.href} />
                 ))}
               </Flex>
             </Flex>
           </Box>
-          <Text cursor="pointer" onClick={toggleColorMode} fontSize="2xl">
+          <Text cursor="pointer" onClick={toggleColorMode}>
             {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
           </Text>
         </Flex>
