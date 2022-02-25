@@ -6,6 +6,7 @@ const movies = [
     director: {
       name: 'Martin Scorsese',
     },
+    genre: ['Sci-fi', 'Action'],
   },
   {
     title: 'Inception',
@@ -15,6 +16,7 @@ const movies = [
     director: {
       name: 'Christopher Nolan',
     },
+    genre: ['Sci-fi', 'Action'],
   },
   {
     title: 'American Hustle',
@@ -23,6 +25,7 @@ const movies = [
     director: {
       name: 'David O. Russell',
     },
+    genre: ['Sci-fi', 'Action'],
   },
 ];
 
