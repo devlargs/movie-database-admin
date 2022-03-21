@@ -16,7 +16,6 @@ import {
   Select,
   Tag,
   Text,
-  useColorMode,
   useDisclosure,
 } from '@chakra-ui/react';
 import Container from '@components/Container';
@@ -24,7 +23,6 @@ import DUMMY_DATA from '@constants/dummyData';
 import { FC } from 'react';
 
 const Home: FC = () => {
-  const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -55,9 +53,9 @@ const Home: FC = () => {
                   gridRowGap="1rem"
                   height="100%"
                   gridTemplateRows="max-content 1fr"
-                  bg={colorMode === 'light' ? 'blue.100' : 'blue.900'}
+                  bg="blue.900"
                   _hover={{
-                    border: `2px solid ${colorMode === 'light' ? '#1A202C' : 'white'}`,
+                    border: `2px solid '#1A202C'`,
                   }}
                   borderTopRightRadius="12px"
                   borderTopLeftRadius="12px"

@@ -1,5 +1,4 @@
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { Box, Flex, Text, useColorMode } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import MenuLink from '@components/MenuLink';
 import DEFAULTS from '@styles/defaults';
 import { FC } from 'react';
@@ -21,11 +20,9 @@ const menuLinks = [
 ];
 
 const Navbar: FC = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
-
   return (
     <header>
-      <Box h={DEFAULTS.headerHeight} bg={colorMode === 'light' ? 'blue.100' : 'blue.900'}>
+      <Box h={DEFAULTS.headerHeight} bg="blue.900">
         <Flex
           justifyContent="space-between"
           maxW={DEFAULTS.containerMaxWidth}
@@ -39,10 +36,6 @@ const Navbar: FC = () => {
               <MenuLink href={`${link.href}`} title={link.title} key={link.href} />
             ))}
           </Flex>
-
-          <Text cursor="pointer" onClick={toggleColorMode} fontSize="1.5rem">
-            {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-          </Text>
         </Flex>
       </Box>
     </header>
