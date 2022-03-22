@@ -10,6 +10,7 @@ import {
   ModalOverlay,
   Select,
 } from '@chakra-ui/react';
+import DirectorSelect from '@components/DirectorSelect';
 import useMovieModal from '@store/useMovieModal';
 import { FC } from 'react';
 
@@ -26,11 +27,13 @@ const AddMovieModal: FC = () => {
         <ModalBody>
           <form>
             <Input placeholder="Title" mb={3} />
-            <Select placeholder="Select Director" mb={3}>
-              <option value="option1">Option 1</option>
-              <option value="option2">Option 2</option>
-              <option value="option3">Option 3</option>
-            </Select>
+            <DirectorSelect
+              mb={3}
+              onChange={
+                (e): void => console.log(e.target.value) // eslint-disable-line
+              }
+            />
+
             <Select placeholder="Select Genre" mb={3}>
               <option value="option1">Option 1</option>
               <option value="option2">Option 2</option>
