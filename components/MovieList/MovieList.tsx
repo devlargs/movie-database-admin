@@ -1,11 +1,14 @@
 import { useQuery } from '@apollo/react-hooks';
 import { Box, Grid, Image, Spinner, Tag, Text } from '@chakra-ui/react';
 import { GET_MOVIES } from '@graphql/queries/movie.query';
+import { Movie } from '@graphql/types';
 import getFontColor from '@utils/getFontColor';
 import { FC } from 'react';
 
 const MovieList: FC = () => {
-  const { data, loading } = useQuery(GET_MOVIES);
+  const { data, loading } = useQuery<{
+    movies: Movie[];
+  }>(GET_MOVIES);
 
   return (
     <>
@@ -26,7 +29,7 @@ const MovieList: FC = () => {
             gridAutoRows="1fr"
             gap={5}
           >
-            {data?.movies?.length &&
+            {data?.movies.length &&
               data.movies.map((movie, idx) => {
                 return (
                   <Box key={idx}>
@@ -48,7 +51,7 @@ const MovieList: FC = () => {
                         borderTopLeftRadius="12px"
                         transition="0.2s ease"
                         src={movie.imageUrl}
-                        alt={`${movie.title} poster`}
+                        alt={`${movie.title} Poster`}
                       />
                       <Box p={2}>
                         <Text fontSize="lg">{movie.title}</Text>
