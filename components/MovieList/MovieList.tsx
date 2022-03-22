@@ -1,0 +1,76 @@
+import { useQuery } from '@apollo/react-hooks';
+import { Box, Grid, Image, Spinner, Tag, Text } from '@chakra-ui/react';
+import { GET_MOVIES } from '@graphql/queries/movie.query';
+import getFontColor from '@utils/getFontColor';
+import { FC } from 'react';
+
+const MovieList: FC = () => {
+  const { data, loading } = useQuery(GET_MOVIES);
+
+  return (
+    <>
+      {loading ? (
+        <Box d="grid" placeContent="center" h="2xl">
+          <Spinner size="lg" />
+        </Box>
+      ) : (
+        <Box mt="10" transition="1s ease">
+          <Grid
+            gridTemplateColumns={{
+              base: 'repeat(1, 1fr)',
+              sm: 'repeat(2, 1fr)',
+              md: 'repeat(3, 1fr)',
+              lg: 'repeat(4, 1fr)',
+              xl: 'repeat(5, 1fr)',
+            }}
+            gridAutoRows="1fr"
+            gap={5}
+          >
+            {data?.movies?.length &&
+              data.movies.map((movie, idx) => {
+                return (
+                  <Box key={idx}>
+                    <Grid
+                      gridRowGap="1rem"
+                      height="100%"
+                      gridTemplateRows="max-content 1fr"
+                      bg="blue.900"
+                      _hover={{
+                        border: `2px solid white`,
+                      }}
+                      borderTopRightRadius="12px"
+                      borderTopLeftRadius="12px"
+                      cursor="pointer"
+                      transition="0.25s ease-in-out"
+                    >
+                      <Image
+                        borderTopRightRadius="12px"
+                        borderTopLeftRadius="12px"
+                        transition="0.2s ease"
+                        src={movie.imageUrl}
+                        alt={`${movie.title} poster`}
+                      />
+                      <Box p={2}>
+                        <Text fontSize="lg">{movie.title}</Text>
+                        {movie.genres.length && (
+                          <Text fontSize="sm">
+                            {movie.genres.map((genre) => (
+                              <Tag key={genre._id} mr={2} mt="6px" bg={genre.color} color={getFontColor(genre.color)}>
+                                {genre.name}
+                              </Tag>
+                            ))}
+                          </Text>
+                        )}
+                      </Box>
+                    </Grid>
+                  </Box>
+                );
+              })}
+          </Grid>
+        </Box>
+      )}
+    </>
+  );
+};
+
+export default MovieList;

@@ -1,0 +1,8 @@
+schema:
+  - ${API_URL:https://graphql-movies-api.herokuapp.com/graphql}
+generates:
+  ./graphql/types.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-document-nodes
