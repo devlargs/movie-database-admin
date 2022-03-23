@@ -1,24 +1,24 @@
 import { Button, Flex, Heading } from '@chakra-ui/react';
-import AddMovieModal from '@components/AddMovieModal';
+import AddDirectorModal from '@components/AddDirectorModal';
 import Container from '@components/Container';
 import DirectorsList from '@components/DirectorsList';
-import useMovieModal from '@store/useMovieModal';
+import useDirectorModal from '@store/useDirectorModal';
 import { FC } from 'react';
 
 const Directors: FC = () => {
-  const onOpen = useMovieModal((modal) => modal.onOpen);
+  const onOpen = useDirectorModal((modal) => modal.onOpen);
 
   return (
     <Container>
       <Flex alignItems="center" justifyContent="space-between">
-        <Heading>Movies</Heading>
+        <Heading>Directors</Heading>
         <Button colorScheme="teal" onClick={(): void => onOpen()}>
-          Add movie
+          Add Directors
         </Button>
       </Flex>
 
       <DirectorsList />
-      <AddMovieModal />
+      <AddDirectorModal />
     </Container>
   );
 };

@@ -9,15 +9,15 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import useMovieModal from '@store/useMovieModal';
+import useDirectorModal from '@store/useDirectorModal';
 import { FC } from 'react';
 
 const AddDiretorModal: FC = () => {
-  const onClose = useMovieModal((modal) => modal.onClose);
-  const isOpen = useMovieModal((modal) => modal.isOpen);
+  const onClose = useDirectorModal((modal) => modal.onClose);
+  const isOpen = useDirectorModal((modal) => modal.isOpen);
 
   return (
-    <Modal onClose={onClose} isOpen={isOpen} isCentered>
+    <Modal onClose={onClose} isOpen={isOpen} isCentered closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Add Director</ModalHeader>
