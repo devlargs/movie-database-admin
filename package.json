@@ -10,7 +10,8 @@
     "lint:js": "eslint src --ext .ts --ext .tsx --fix",
     "lint": "next lint",
     "check-updates": "ncu -u",
-    "check-updates-minor": "ncu -u -t minor"
+    "check-updates-minor": "ncu -u -t minor",
+    "generate-types": "graphql-codegen"
   },
   "husky": {
     "hooks": {
@@ -27,6 +28,7 @@
     ]
   },
   "dependencies": {
+    "@apollo/react-hooks": "^4.0.0",
     "@chakra-ui/icons": "^1.1.7",
     "@chakra-ui/react": "^1.8.5",
     "@emotion/react": "^11.8.1",
@@ -35,9 +37,16 @@
     "next": "12.1.0",
     "nprogress": "^0.2.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-color": "^2.19.3",
+    "react-dom": "17.0.2",
+    "react-hook-form": "^7.28.1",
+    "zustand": "^3.7.1"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.2.2",
+    "@graphql-codegen/typescript": "^2.3.1",
+    "@graphql-codegen/typescript-document-nodes": "^2.2.5",
+    "@graphql-codegen/typescript-operations": "^2.2.4",
     "@types/node": "^17.0.21",
     "@types/react": "^17.0.39",
     "@typescript-eslint/eslint-plugin": "^5.12.1",

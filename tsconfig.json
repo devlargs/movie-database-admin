@@ -5,8 +5,10 @@
     "paths": {
       "@components/*": ["components/*"],
       "@constants/*": ["constants/*"],
-      "@store/*": ["@store/*"],
-      "@styles/*": ["styles/*"]
+      "@store/*": ["store/*"],
+      "@styles/*": ["styles/*"],
+      "@graphql/*": ["graphql/*"],
+      "@utils/*": ["utils/*"]
     },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

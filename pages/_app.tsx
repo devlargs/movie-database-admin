@@ -1,5 +1,7 @@
+import { ApolloProvider } from '@apollo/react-hooks';
 import { ChakraProvider } from '@chakra-ui/react';
 import Navbar from '@components/Navbar';
+import client from '@graphql/client';
 import theme from '@styles/theme';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
@@ -26,10 +28,12 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
   }, [router.events]);
 
   return (
-    <ChakraProvider theme={theme}>
-      <Navbar />
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <ApolloProvider client={client}>
+      <ChakraProvider theme={theme}>
+        <Navbar />
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </ApolloProvider>
   );
 };
 
