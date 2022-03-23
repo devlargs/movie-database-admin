@@ -1,7 +1,6 @@
 import { ApolloProvider } from '@apollo/react-hooks';
 import { ChakraProvider } from '@chakra-ui/react';
 import Navbar from '@components/Navbar';
-import RequestHelper from '@components/RequestHelper';
 import client from '@graphql/client';
 import theme from '@styles/theme';
 import { AppProps } from 'next/app';
@@ -30,7 +29,6 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
 
   return (
     <ApolloProvider client={client}>
-      <RequestHelper />
       <ChakraProvider theme={theme}>
         <Navbar />
         <Component {...pageProps} />
