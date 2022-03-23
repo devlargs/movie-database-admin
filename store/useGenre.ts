@@ -7,6 +7,7 @@ type UseGenre = {
   genres: Genre[];
   loading: boolean;
   setGenres: () => void;
+  addGenre: (genre: Genre) => void;
 };
 
 const useGenre = create<UseGenre>((set) => ({
@@ -30,6 +31,10 @@ const useGenre = create<UseGenre>((set) => ({
       set(() => ({ loading: false }));
     }
   },
+  addGenre: (genre: Genre): void =>
+    set((value) => ({
+      genres: [...value.genres, genre],
+    })),
 }));
 
 export default useGenre;
