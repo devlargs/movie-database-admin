@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/react-hooks';
-import { Box, Grid, Image, Spinner, Tag, Text } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Grid, Image, Spinner, Tag, Text } from '@chakra-ui/react';
 import { GET_MOVIES } from '@graphql/queries/movie.query';
 import { Movie } from '@graphql/types';
 import getFontColor from '@utils/getFontColor';
@@ -26,9 +26,9 @@ const MovieList: FC = () => {
         </Box>
       ) : (
         <Box mt="10" transition="1s ease">
-          <Grid gridTemplateColumns={templateColumns} gap={5}>
-            {data?.movies.length &&
-              data.movies.map((movie, idx) => {
+          {data?.movies.length ? (
+            <Grid gridTemplateColumns={templateColumns} gap={5}>
+              {data.movies.map((movie, idx) => {
                 return (
                   <Box key={idx}>
                     <Grid
@@ -67,7 +67,13 @@ const MovieList: FC = () => {
                   </Box>
                 );
               })}
-          </Grid>
+            </Grid>
+          ) : (
+            <Alert status="error">
+              <AlertIcon />
+              No movies found
+            </Alert>
+          )}
         </Box>
       )}
     </>
