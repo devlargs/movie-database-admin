@@ -1,1 +1,1 @@
-export { default } from './AddDiretorModal';
+export { default } from './AddDirectorModal';
