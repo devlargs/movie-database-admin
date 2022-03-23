@@ -1,92 +1,20 @@
-import { Box, Grid, Image, Text } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Grid, Image, Spinner, Text } from '@chakra-ui/react';
 import { templateColumns } from '@components/MovieList/MovieList';
-import { FC } from 'react';
-
-type Props = {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  imageUrl: string;
-};
+import useDirector from '@store/useDirector';
+import { FC, useEffect } from 'react';
 
 const Directors: FC = () => {
-  const data: Props[] = [
-    {
-      _id: '62387f5422f6f09f50376de0',
-      firstName: 'Martin',
-      lastName: 'Scorsese',
-      imageUrl: 'https://cdn.britannica.com/76/156176-050-90A36E79/Martin-Scorsese-2008.jpg',
-    },
-    {
-      _id: '6238812622f6f09f50376dfd',
-      firstName: 'Christopher',
-      lastName: 'Nolan',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/c/c4/Christopher_Nolan%2C_London%2C_2013_%28crop%29.jpg',
-    },
-    {
-      _id: '6238812622f6f09f50376dfd',
-      firstName: 'Christopher',
-      lastName: 'Nolan',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/c/c4/Christopher_Nolan%2C_London%2C_2013_%28crop%29.jpg',
-    },
-    {
-      _id: '6238812622f6f09f50376dfd',
-      firstName: 'Christopher',
-      lastName: 'Nolan',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/c/c4/Christopher_Nolan%2C_London%2C_2013_%28crop%29.jpg',
-    },
-    {
-      _id: '6238812622f6f09f50376dfd',
-      firstName: 'Christopher',
-      lastName: 'Nolan',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/c/c4/Christopher_Nolan%2C_London%2C_2013_%28crop%29.jpg',
-    },
-    {
-      _id: '6238812622f6f09f50376dfd',
-      firstName: 'Christopher',
-      lastName: 'Nolan',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/c/c4/Christopher_Nolan%2C_London%2C_2013_%28crop%29.jpg',
-    },
-    {
-      _id: '6238812622f6f09f50376dfd',
-      firstName: 'Christopher',
-      lastName: 'Nolan',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/c/c4/Christopher_Nolan%2C_London%2C_2013_%28crop%29.jpg',
-    },
-    {
-      _id: '6238812622f6f09f50376dfd',
-      firstName: 'Christopher',
-      lastName: 'Nolan',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/c/c4/Christopher_Nolan%2C_London%2C_2013_%28crop%29.jpg',
-    },
-    {
-      _id: '6238812622f6f09f50376dfd',
-      firstName: 'Christopher',
-      lastName: 'Nolan',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/c/c4/Christopher_Nolan%2C_London%2C_2013_%28crop%29.jpg',
-    },
-    {
-      _id: '6238812622f6f09f50376dfd',
-      firstName: 'Christopher',
-      lastName: 'Nolan',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/c/c4/Christopher_Nolan%2C_London%2C_2013_%28crop%29.jpg',
-    },
-  ];
+  const { setDirector: load, loading, directors } = useDirector();
+
+  useEffect(() => load(), [load]);
 
   return (
     <Box mt="10" transition="1s ease">
-      <Grid gridTemplateColumns={templateColumns} gap={5} w="100%">
-        {data.length &&
-          data.map((director, i: number) => (
+      {loading ? (
+        <Spinner />
+      ) : directors.length ? (
+        <Grid gridTemplateColumns={templateColumns} gap={5} w="100%">
+          {directors.map((director, i: number) => (
             <Box key={i}>
               <Grid
                 gridRowGap="1rem"
@@ -118,7 +46,13 @@ const Directors: FC = () => {
               </Grid>
             </Box>
           ))}
-      </Grid>
+        </Grid>
+      ) : (
+        <Alert status="error">
+          <AlertIcon />
+          No directors found
+        </Alert>
+      )}
     </Box>
   );
 };
