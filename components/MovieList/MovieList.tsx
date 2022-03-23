@@ -5,6 +5,14 @@ import { Movie } from '@graphql/types';
 import getFontColor from '@utils/getFontColor';
 import { FC } from 'react';
 
+export const templateColumns = {
+  base: 'repeat(1, 1fr)',
+  sm: 'repeat(2, 1fr)',
+  md: 'repeat(3, 1fr)',
+  lg: 'repeat(4, 1fr)',
+  xl: 'repeat(5, 1fr)',
+};
+
 const MovieList: FC = () => {
   const { data, loading } = useQuery<{
     movies: Movie[];
@@ -18,17 +26,7 @@ const MovieList: FC = () => {
         </Box>
       ) : (
         <Box mt="10" transition="1s ease">
-          <Grid
-            gridTemplateColumns={{
-              base: 'repeat(1, 1fr)',
-              sm: 'repeat(2, 1fr)',
-              md: 'repeat(3, 1fr)',
-              lg: 'repeat(4, 1fr)',
-              xl: 'repeat(5, 1fr)',
-            }}
-            gridAutoRows="1fr"
-            gap={5}
-          >
+          <Grid gridTemplateColumns={templateColumns} gap={5}>
             {data?.movies.length &&
               data.movies.map((movie, idx) => {
                 return (
