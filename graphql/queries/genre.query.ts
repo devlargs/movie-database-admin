@@ -5,6 +5,7 @@ export const GET_GENRES = gql`
     genres {
       _id
       name
+      color
     }
   }
 `;
