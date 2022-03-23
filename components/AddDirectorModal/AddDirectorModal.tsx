@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/react-hooks';
 import {
   Button,
   Image,
@@ -11,6 +12,8 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
+import { CREATE_DIRECTOR } from '@graphql/mutations/director.mutation';
+import useDirector from '@store/useDirector';
 import useDirectorModal from '@store/useDirectorModal';
 import { Director } from 'graphql/types';
 import { FC } from 'react';
@@ -28,23 +31,33 @@ const AddDirectorModal: FC = () => {
   } = useForm();
   const onClose = useDirectorModal((modal) => modal.onClose);
   const isOpen = useDirectorModal((modal) => modal.isOpen);
-
+  const [createDirector, { loading }] = useMutation(CREATE_DIRECTOR);
+  const addDirector = useDirector((director) => director.addDirector);
   const imageUrl = watch('imageUrl');
 
-  const onSubmit = (data: DirectorInput): void => {
-    console.log(data); // eslint-disable-line
+  const closeModal = (): void => {
+    onClose();
+    reset();
+  };
+
+  const onSubmit = async (input: DirectorInput): Promise<void> => {
+    console.log(input); // eslint-disable-line
+    try {
+      const { data } = await createDirector({
+        variables: {
+          input,
+        },
+      });
+      if (data?.createDirector) {
+        addDirector(data.createDirector);
+      }
+    } finally {
+      closeModal();
+    }
   };
 
   return (
-    <Modal
-      onClose={(): void => {
-        onClose();
-        reset();
-      }}
-      isOpen={isOpen}
-      isCentered
-      closeOnOverlayClick={false}
-    >
+    <Modal onClose={closeModal} isOpen={isOpen} isCentered closeOnOverlayClick={false}>
       <ModalOverlay />
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalContent>
@@ -62,7 +75,7 @@ const AddDirectorModal: FC = () => {
             {imageUrl && <Image src={imageUrl} alt="Director's Image" w={'100%'} h="400px" transition="1s ease-in" />}
           </ModalBody>
           <ModalFooter>
-            <Button type="submit" colorScheme="teal">
+            <Button type="submit" colorScheme="teal" isLoading={loading}>
               Submit
             </Button>
           </ModalFooter>

@@ -7,9 +7,10 @@ type UseDirector = {
   directors: Director[];
   loading: boolean;
   setDirector: () => void;
+  addDirector: (director: Director) => void;
 };
 
-const useDirector = create<UseDirector>((set) => ({
+const useDirector = create<UseDirector>((set, get) => ({
   directors: [],
   loading: false,
   setDirector: async (): Promise<void> => {
@@ -30,6 +31,10 @@ const useDirector = create<UseDirector>((set) => ({
       set(() => ({ loading: false }));
     }
   },
+  addDirector: (director: Director): void =>
+    set(() => ({
+      directors: [...get().directors, director],
+    })),
 }));
 
 export default useDirector;
