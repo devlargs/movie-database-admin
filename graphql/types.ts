@@ -88,6 +88,9 @@ export type Mutation = {
   createDirector: Director;
   createGenre: Genre;
   createMovie: Movie;
+  deleteGenre: Scalars['Boolean'];
+  updateDirector: Director;
+  updateGenre: Genre;
 };
 
 export type MutationAddUserArgs = {
@@ -104,6 +107,20 @@ export type MutationCreateGenreArgs = {
 
 export type MutationCreateMovieArgs = {
   input: CreateMovieInput;
+};
+
+export type MutationDeleteGenreArgs = {
+  id: Scalars['String'];
+};
+
+export type MutationUpdateDirectorArgs = {
+  _id: Scalars['String'];
+  input: UpdateDirectorInput;
+};
+
+export type MutationUpdateGenreArgs = {
+  id: Scalars['String'];
+  input: UpdateGenreInput;
 };
 
 export type Query = {
@@ -139,6 +156,17 @@ export type QueryMovieArgs = {
 
 export type QueryMoviesArgs = {
   filters?: InputMaybe<ListMovieInput>;
+};
+
+export type UpdateDirectorInput = {
+  firstName?: InputMaybe<Scalars['String']>;
+  imageUrl?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateGenreInput = {
+  color?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
