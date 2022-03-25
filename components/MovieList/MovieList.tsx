@@ -14,9 +14,18 @@ export const templateColumns = {
 };
 
 const MovieList: FC = () => {
-  const { data, loading } = useQuery<{
+  const { data, loading, error } = useQuery<{
     movies: Movie[];
   }>(GET_MOVIES);
+
+  if (error) {
+    return (
+      <Alert status="error" mt="8">
+        <AlertIcon />
+        Error
+      </Alert>
+    );
+  }
 
   return (
     <>

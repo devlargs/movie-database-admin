@@ -53,6 +53,15 @@ const mocks = [
   },
 ];
 
+const erroredMock = [
+  {
+    request: {
+      query: GET_MOVIES,
+    },
+    error: new Error('An error occurred'),
+  },
+];
+
 describe('MovieList', () => {
   it('should successfully render movies', async () => {
     render(
@@ -74,5 +83,18 @@ describe('MovieList', () => {
     );
     expect(container.getElementsByClassName('chakra-spinner').length).toBe(1);
     expect(screen.getByText(/loading.../i)).toBeInTheDocument();
+  });
+
+  it('should show an errored state', async () => {
+    render(
+      <MockedProvider mocks={erroredMock} addTypename={false}>
+        <MovieList />
+      </MockedProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText(/error/i)).toBeInTheDocument();
+      expect(screen.getByRole('alert')).toBeInTheDocument();
+    });
   });
 });
