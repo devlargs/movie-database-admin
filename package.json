@@ -11,7 +11,8 @@
     "lint": "next lint",
     "check-updates": "ncu -u",
     "check-updates-minor": "ncu -u -t minor",
-    "generate-types": "graphql-codegen"
+    "generate-types": "graphql-codegen",
+    "test": "jest"
   },
   "husky": {
     "hooks": {

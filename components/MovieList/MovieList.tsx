@@ -30,7 +30,7 @@ const MovieList: FC = () => {
             <Grid gridTemplateColumns={templateColumns} gap={5}>
               {data.movies.map((movie, idx) => {
                 return (
-                  <Box key={idx}>
+                  <Box key={idx} data-testid="movie">
                     <Grid
                       gridRowGap="1rem"
                       height="100%"
