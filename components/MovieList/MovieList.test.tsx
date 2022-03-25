@@ -65,4 +65,14 @@ describe('MovieList', () => {
       expect(screen.getAllByTestId('movie').length).toBe(mocks[0].result.data.movies.length);
     });
   });
+
+  it('should show a loading indicator initially', () => {
+    const { container } = render(
+      <MockedProvider addTypename={false}>
+        <MovieList />
+      </MockedProvider>
+    );
+    expect(container.getElementsByClassName('chakra-spinner').length).toBe(1);
+    expect(screen.getByText(/loading.../i)).toBeInTheDocument();
+  });
 });
