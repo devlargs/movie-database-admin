@@ -41,7 +41,6 @@ const AddDirectorModal: FC = () => {
   };
 
   const onSubmit = async (input: DirectorInput): Promise<void> => {
-    console.log(input); // eslint-disable-line
     try {
       const { data } = await createDirector({
         variables: {

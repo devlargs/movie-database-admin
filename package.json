@@ -11,7 +11,8 @@
     "lint": "next lint",
     "check-updates": "ncu -u",
     "check-updates-minor": "ncu -u -t minor",
-    "generate-types": "graphql-codegen"
+    "generate-types": "graphql-codegen",
+    "test": "jest"
   },
   "husky": {
     "hooks": {
@@ -33,13 +34,19 @@
     "@chakra-ui/react": "^1.8.5",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
+    "@testing-library/jest-dom": "^5.16.3",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/user-event": "^13.5.0",
     "framer-motion": "^6.2.8",
+    "jest": "^27.5.1",
     "next": "12.1.0",
     "nprogress": "^0.2.0",
     "react": "17.0.2",
     "react-color": "^2.19.3",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.28.1",
+    "ts-jest": "^27.1.4",
+    "whatwg-fetch": "^3.6.2",
     "zustand": "^3.7.1"
   },
   "devDependencies": {

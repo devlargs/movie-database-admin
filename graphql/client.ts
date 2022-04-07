@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache } from '@apollo/react-hooks';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  uri: 'https://graphql-movies-api.herokuapp.com/graphql',
+  uri: 'http://localhost:4000/graphql',
 });
 
 export default client;
