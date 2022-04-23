@@ -12,7 +12,7 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
-import DirectorSelect from '@components/DirectorSelect';
+import DirectorsMultiSelect from '@components/DirectorsMultiSelect';
 import GenresSelect from '@components/GenresSelect';
 import { CREATE_MOVIE } from '@graphql/mutations/movie.mutation';
 import { GET_MOVIES } from '@graphql/queries/movie.query';
@@ -42,7 +42,7 @@ const AddMovieModal: FC = () => {
   const onSubmit = async (data): Promise<void> => {
     const input = {
       ...data,
-      directors: [data.directors],
+      directors: data.directors,
       genres: [data.genres],
     };
 
@@ -78,8 +78,13 @@ const AddMovieModal: FC = () => {
               control={control}
               name="directors"
               rules={{ required: true }}
-              render={({ field: { onChange, value } }): ReactElement => (
-                <DirectorSelect mb={3} value={value} onChange={onChange} />
+              render={({ field: { onChange } }): ReactElement => (
+                <DirectorsMultiSelect
+                  onChange={(directors): void => {
+                    const newDirectors = directors.map((director) => director.value);
+                    onChange([...newDirectors]);
+                  }}
+                />
               )}
             />
             {errors.directors && <Text variant="error">Director is required</Text>}
