@@ -9,7 +9,7 @@ const Directors: FC = () => {
   useEffect(() => load(), [load]);
 
   return (
-    <Box mt="10" transition="1s ease">
+    <Box mt="10" pb="10" transition="1s ease">
       {loading ? (
         <Spinner />
       ) : directors.length ? (

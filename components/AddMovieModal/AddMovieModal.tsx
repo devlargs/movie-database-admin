@@ -12,8 +12,8 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
-import DirectorSelect from '@components/DirectorSelect';
-import GenresSelect from '@components/GenresSelect';
+import DirectorsMultiSelect from '@components/DirectorsMultiSelect';
+import GenreMultiSelect from '@components/GenreMultiSelect';
 import { CREATE_MOVIE } from '@graphql/mutations/movie.mutation';
 import { GET_MOVIES } from '@graphql/queries/movie.query';
 import useMovieModal from '@store/useMovieModal';
@@ -39,13 +39,7 @@ const AddMovieModal: FC = () => {
     onClose();
   };
 
-  const onSubmit = async (data): Promise<void> => {
-    const input = {
-      ...data,
-      directors: [data.directors],
-      genres: [data.genres],
-    };
-
+  const onSubmit = async (input): Promise<void> => {
     try {
       await createMovie({
         variables: {
@@ -78,8 +72,13 @@ const AddMovieModal: FC = () => {
               control={control}
               name="directors"
               rules={{ required: true }}
-              render={({ field: { onChange, value } }): ReactElement => (
-                <DirectorSelect mb={3} value={value} onChange={onChange} />
+              render={({ field: { onChange } }): ReactElement => (
+                <DirectorsMultiSelect
+                  onChange={(directors): void => {
+                    const newDirectors = directors.map((director) => director.value);
+                    onChange([...newDirectors]);
+                  }}
+                />
               )}
             />
             {errors.directors && <Text variant="error">Director is required</Text>}
@@ -88,8 +87,12 @@ const AddMovieModal: FC = () => {
               control={control}
               name="genres"
               rules={{ required: true }}
-              render={({ field: { onChange, value } }): ReactElement => (
-                <GenresSelect value={value} mb={3} onChange={onChange} />
+              render={({ field: { onChange } }): ReactElement => (
+                <GenreMultiSelect
+                  onChange={(genres): void => {
+                    onChange(genres.map((genre) => genre.value));
+                  }}
+                />
               )}
             />
             {errors.genres && <Text variant="error">Genre is required</Text>}

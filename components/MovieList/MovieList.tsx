@@ -16,7 +16,9 @@ export const templateColumns = {
 const MovieList: FC = () => {
   const { data, loading, error } = useQuery<{
     movies: Movie[];
-  }>(GET_MOVIES);
+  }>(GET_MOVIES, {
+    fetchPolicy: 'cache-and-network',
+  });
 
   if (error) {
     return (
@@ -34,7 +36,7 @@ const MovieList: FC = () => {
           <Spinner size="lg" />
         </Box>
       ) : (
-        <Box mt="10" transition="1s ease">
+        <Box mt="10" pb="10" transition="1s ease">
           {data?.movies.length ? (
             <Grid gridTemplateColumns={templateColumns} gap={5}>
               {data.movies.map((movie, idx) => {
@@ -59,6 +61,7 @@ const MovieList: FC = () => {
                         transition="0.2s ease"
                         src={movie.imageUrl}
                         alt={`${movie.title} Poster`}
+                        minH="350px"
                       />
                       <Box p={2}>
                         <Text fontSize="lg">{movie.title}</Text>

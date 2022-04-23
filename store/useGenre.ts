@@ -20,7 +20,7 @@ const useGenre = create<UseGenre>((set) => ({
       const { data } = await client.query<{
         genres: Genre[];
       }>({
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
         query: GET_GENRES,
       });
 
