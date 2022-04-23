@@ -25,7 +25,7 @@ const DEFAULTS: Props = {
       background: '#2D3748',
       border: '1px solid gray',
     }),
-    control: (styles) => ({ ...styles, backgroundColor: '#2D3748', border: '1px solid gray' }),
+    control: (styles) => ({ ...styles, backgroundColor: '#2D3748', border: '1px solid gray', paddingLeft: 5 }),
     multiValue: (styles) => ({ ...styles, background: '#80E6D9 ' }),
     multiValueRemove: (styles) => ({ ...styles, background: '#FEB2B2', color: 'red' }),
   },

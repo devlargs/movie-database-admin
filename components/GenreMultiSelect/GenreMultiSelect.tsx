@@ -1,27 +1,27 @@
 import { Box } from '@chakra-ui/react';
-import useDirector from '@store/useDirector';
+import useGenre from '@store/useGenre';
 import DEFAULTS from '@styles/defaults';
 import { FC, useEffect, useMemo } from 'react';
 import Select from 'react-select';
 
-const DirectorMultiSelect: FC<{
+const GenreMultiSelect: FC<{
   onChange: (e) => void;
 }> = ({ onChange }) => {
-  const { setDirector: loadDirectors, loading, directors } = useDirector();
+  const { setGenres: load, loading, genres } = useGenre();
 
-  useEffect(() => loadDirectors(), [loadDirectors]);
+  useEffect(() => load(), [load]);
 
   const selectData = useMemo(() => {
-    return directors.map((director) => ({
-      value: director._id,
-      label: `${director.firstName} ${director.lastName}`,
+    return genres.map((genre) => ({
+      value: genre._id,
+      label: genre.name,
     }));
-  }, [directors]);
+  }, [genres]);
 
   return (
     <Box mb="0.75rem">
       <Select
-        placeholder="Director"
+        placeholder="Genre"
         onChange={(e): void => onChange(e)}
         styles={DEFAULTS.select}
         isMulti
@@ -34,4 +34,4 @@ const DirectorMultiSelect: FC<{
   );
 };
 
-export default DirectorMultiSelect;
+export default GenreMultiSelect;
