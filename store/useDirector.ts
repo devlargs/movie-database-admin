@@ -21,7 +21,7 @@ const useDirector = create<UseDirector>((set, get) => ({
         directors: Director[];
       }>({
         query: GET_DIRECTORS,
-        fetchPolicy: 'cache-first',
+        fetchPolicy: 'network-only',
       });
 
       set(() => ({
