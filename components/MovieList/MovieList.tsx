@@ -16,9 +16,7 @@ export const templateColumns = {
 const MovieList: FC = () => {
   const { data, loading, error } = useQuery<{
     movies: Movie[];
-  }>(GET_MOVIES, {
-    fetchPolicy: 'cache-and-network',
-  });
+  }>(GET_MOVIES);
 
   if (error) {
     return (
