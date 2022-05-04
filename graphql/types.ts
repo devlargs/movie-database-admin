@@ -12,10 +12,17 @@ export type Scalars = {
   Float: number;
 };
 
-export type AddUserInput = {
-  age: Scalars['Int'];
-  /** First Name */
+export type Actor = {
+  __typename?: 'Actor';
+  _id: Scalars['String'];
   firstName: Scalars['String'];
+  imageUrl: Scalars['String'];
+  lastName: Scalars['String'];
+};
+
+export type CreateActorInput = {
+  firstName: Scalars['String'];
+  imageUrl: Scalars['String'];
   lastName: Scalars['String'];
 };
 
@@ -31,6 +38,7 @@ export type CreateGenreInput = {
 };
 
 export type CreateMovieInput = {
+  actors: Array<Scalars['String']>;
   directors: Array<Scalars['String']>;
   genres: Array<Scalars['String']>;
   imageUrl: Scalars['String'];
@@ -49,7 +57,15 @@ export type Genre = {
   __typename?: 'Genre';
   _id: Scalars['String'];
   color: Scalars['String'];
+  /** Gago */
   name: Scalars['String'];
+};
+
+export type ListActorInput = {
+  _id?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  imageUrl?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
 };
 
 export type ListDirectorInput = {
@@ -67,6 +83,7 @@ export type ListGenreInput = {
 
 export type ListMovieInput = {
   _id?: InputMaybe<Scalars['String']>;
+  actors: Scalars['String'];
   directors: Array<Scalars['String']>;
   genres: Array<Scalars['String']>;
   imageUrl: Scalars['String'];
@@ -76,6 +93,7 @@ export type ListMovieInput = {
 export type Movie = {
   __typename?: 'Movie';
   _id: Scalars['String'];
+  actors: Array<Actor>;
   directors: Array<Director>;
   genres: Array<Genre>;
   imageUrl: Scalars['String'];
@@ -84,17 +102,19 @@ export type Movie = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addUser: Array<User>;
+  createActor: Actor;
   createDirector: Director;
   createGenre: Genre;
   createMovie: Movie;
   deleteGenre: Scalars['Boolean'];
+  updateActor: Actor;
   updateDirector: Director;
   updateGenre: Genre;
+  updateMovie: Movie;
 };
 
-export type MutationAddUserArgs = {
-  input: AddUserInput;
+export type MutationCreateActorArgs = {
+  input: CreateActorInput;
 };
 
 export type MutationCreateDirectorArgs = {
@@ -113,6 +133,11 @@ export type MutationDeleteGenreArgs = {
   id: Scalars['String'];
 };
 
+export type MutationUpdateActorArgs = {
+  _id: Scalars['String'];
+  input: UpdateActorInput;
+};
+
 export type MutationUpdateDirectorArgs = {
   _id: Scalars['String'];
   input: UpdateDirectorInput;
@@ -123,15 +148,29 @@ export type MutationUpdateGenreArgs = {
   input: UpdateGenreInput;
 };
 
+export type MutationUpdateMovieArgs = {
+  _id: Scalars['String'];
+  input: UpdateMovieInput;
+};
+
 export type Query = {
   __typename?: 'Query';
+  actor: Actor;
+  actors: Array<Actor>;
   director: Director;
   directors: Array<Director>;
   genre: Genre;
   genres: Array<Genre>;
   movie: Movie;
   movies: Array<Movie>;
-  users: Array<User>;
+};
+
+export type QueryActorArgs = {
+  _id: Scalars['String'];
+};
+
+export type QueryActorsArgs = {
+  filters?: InputMaybe<ListActorInput>;
 };
 
 export type QueryDirectorArgs = {
@@ -158,6 +197,12 @@ export type QueryMoviesArgs = {
   filters?: InputMaybe<ListMovieInput>;
 };
 
+export type UpdateActorInput = {
+  firstName?: InputMaybe<Scalars['String']>;
+  imageUrl?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+};
+
 export type UpdateDirectorInput = {
   firstName?: InputMaybe<Scalars['String']>;
   imageUrl?: InputMaybe<Scalars['String']>;
@@ -169,10 +214,11 @@ export type UpdateGenreInput = {
   name?: InputMaybe<Scalars['String']>;
 };
 
-export type User = {
-  __typename?: 'User';
-  _id: Scalars['String'];
-  age: Scalars['Int'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
+export type UpdateMovieInput = {
+  _id?: InputMaybe<Scalars['String']>;
+  actors?: InputMaybe<Array<Scalars['String']>>;
+  directors?: InputMaybe<Array<Scalars['String']>>;
+  genres?: InputMaybe<Array<Scalars['String']>>;
+  imageUrl?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
 };

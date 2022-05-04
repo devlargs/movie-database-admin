@@ -17,6 +17,10 @@ const menuLinks = [
     title: 'Directors',
     href: '/directors',
   },
+  {
+    title: 'Actors',
+    href: '/actors',
+  },
 ];
 
 const Navbar: FC = () => {
