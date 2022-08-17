@@ -1,10 +1,11 @@
+import { API_URL } from '@constants/apiUrl';
 import { FC } from 'react';
 
 const Upload: FC = () => {
   const onChange = async (e): Promise<void> => {
     const file = e.target.files[0];
     try {
-      const data = await fetch(`https://graphql-movies-api.herokuapp.com/s3/url?folder=movies&filename=${file.name}`);
+      const data = await fetch(`${API_URL}/s3/url?folder=actors&filename=${file.name}`);
       const response = await data.json();
       const url = response.signedUrl;
 
