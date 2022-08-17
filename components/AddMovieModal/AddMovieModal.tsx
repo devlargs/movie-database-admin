@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import DirectorsMultiSelect from '@components/DirectorsMultiSelect';
 import GenreMultiSelect from '@components/GenreMultiSelect';
+import UploadFile from '@components/UploadFile';
 import { CREATE_MOVIE } from '@graphql/mutations/movie.mutation';
 import { GET_MOVIES } from '@graphql/queries/movie.query';
 import useMovieModal from '@store/useMovieModal';
@@ -30,6 +31,7 @@ const AddMovieModal: FC = () => {
     formState: { errors },
     watch,
     reset,
+    setValue,
   } = useForm();
   const imageUrl = watch('imageUrl');
   const [createMovie, { loading }] = useMutation(CREATE_MOVIE);
@@ -97,9 +99,17 @@ const AddMovieModal: FC = () => {
             />
             {errors.genres && <Text variant="error">Genre is required</Text>}
 
-            <Input placeholder="Image Url" mb={3} {...register('imageUrl', { required: true })} />
-            {errors.imageUrl && <Text variant="error">Image Url is Required</Text>}
-            {imageUrl && <Image src={imageUrl} alt="Director's Image" w={'100%'} h="400px" transition="1s ease-in" />}
+            <Input mb={3} {...register('imageUrl', { required: true })} display="none" />
+            <UploadFile
+              label="Poster"
+              callback={(url): void => setValue('imageUrl', url)}
+              type="movies"
+              errorMessage={errors.imageUrl && 'Image is Required!'}
+            />
+
+            {imageUrl && (
+              <Image mt={3} src={imageUrl} alt="Movie Poster" w={'100%'} h="400px" transition="1s ease-in" />
+            )}
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="teal" type="submit" isLoading={loading}>

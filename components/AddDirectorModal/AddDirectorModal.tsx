@@ -12,6 +12,7 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
+import UploadFile from '@components/UploadFile';
 import { CREATE_DIRECTOR } from '@graphql/mutations/director.mutation';
 import useDirector from '@store/useDirector';
 import useDirectorModal from '@store/useDirectorModal';
@@ -28,6 +29,7 @@ const AddDirectorModal: FC = () => {
     formState: { errors },
     reset,
     watch,
+    setValue,
   } = useForm();
   const onClose = useDirectorModal((modal) => modal.onClose);
   const isOpen = useDirectorModal((modal) => modal.isOpen);
@@ -69,9 +71,17 @@ const AddDirectorModal: FC = () => {
             <Input placeholder="Last Name" mb={3} {...register('lastName', { required: true })} />
             {errors.lastName && <Text variant="error">Last Name is Required</Text>}
 
-            <Input placeholder="Image Url" mb={3} {...register('imageUrl', { required: true })} />
-            {errors.imageUrl && <Text variant="error">Image Url is Required</Text>}
-            {imageUrl && <Image src={imageUrl} alt="Director's Image" w={'100%'} h="400px" transition="1s ease-in" />}
+            <Input mb={3} {...register('imageUrl', { required: true })} display="none" />
+            <UploadFile
+              label="Photo"
+              callback={(url): void => setValue('imageUrl', url)}
+              type="directors"
+              errorMessage={errors.imageUrl && 'Image is Required!'}
+            />
+
+            {imageUrl && (
+              <Image mt={3} src={imageUrl} alt="Director's Image" w={'100%'} h="400px" transition="1s ease-in" />
+            )}
           </ModalBody>
           <ModalFooter>
             <Button type="submit" colorScheme="teal" isLoading={loading}>
