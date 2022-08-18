@@ -1,7 +1,6 @@
 import { useMutation } from '@apollo/react-hooks';
 import {
   Button,
-  Image,
   Input,
   Modal,
   ModalBody,
@@ -19,7 +18,8 @@ import UploadFile from '@components/UploadFile';
 import { CREATE_MOVIE } from '@graphql/mutations/movie.mutation';
 import { GET_MOVIES } from '@graphql/queries/movie.query';
 import useMovieModal from '@store/useMovieModal';
-import { FC, ReactElement } from 'react';
+import { useUploadFile } from '@store/useUploadFile';
+import { FC, ReactElement, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 const AddMovieModal: FC = () => {
@@ -30,12 +30,16 @@ const AddMovieModal: FC = () => {
     control,
     handleSubmit,
     formState: { errors },
-    watch,
     reset,
     setValue,
   } = useForm();
-  const imageUrl = watch('imageUrl');
   const [createMovie, { loading }] = useMutation(CREATE_MOVIE);
+  const { file, uploadFile, uploading } = useUploadFile(({ file, uploadFile, loading }) => ({
+    file,
+    uploadFile,
+    uploading: loading,
+  }));
+  const isLoading = useMemo(() => uploading || loading, [uploading, loading]);
 
   const closeModal = (): void => {
     reset();
@@ -43,20 +47,27 @@ const AddMovieModal: FC = () => {
   };
 
   const onSubmit = async (input): Promise<void> => {
-    try {
-      await createMovie({
-        variables: {
-          input,
-        },
-        refetchQueries: [
-          {
-            query: GET_MOVIES,
-            fetchPolicy: 'network-only',
-          },
-        ],
-      });
-    } finally {
-      closeModal();
+    if (file) {
+      try {
+        await uploadFile('movies', async (imageUrl) => {
+          await createMovie({
+            variables: {
+              input: {
+                ...input,
+                imageUrl,
+              },
+            },
+            refetchQueries: [
+              {
+                query: GET_MOVIES,
+                fetchPolicy: 'network-only',
+              },
+            ],
+          });
+        });
+      } finally {
+        closeModal();
+      }
     }
   };
 
@@ -114,19 +125,15 @@ const AddMovieModal: FC = () => {
             />
             {errors.genres && <Text variant="error">Genre is required</Text>}
 
-            <Input mb={3} {...register('imageUrl', { required: true })} display="none" />
             <UploadFile
-              label="Poster"
+              label="Movie Poster"
               callback={(url): void => setValue('imageUrl', url)}
-              errorMessage={errors.imageUrl && 'Image is Required!'}
+              errorMessage={errors.imageUrl && 'Movie Poster is Required!'}
+              register={register('imageUrl', { required: true })}
             />
-
-            {imageUrl && (
-              <Image mt={3} src={imageUrl} alt="Movie Poster" w={'100%'} h="400px" transition="1s ease-in" />
-            )}
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" type="submit" isLoading={loading}>
+            <Button colorScheme="teal" type="submit" isLoading={isLoading}>
               Submit
             </Button>
           </ModalFooter>
