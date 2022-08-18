@@ -103,7 +103,6 @@ const AddMovieModal: FC = () => {
             <UploadFile
               label="Poster"
               callback={(url): void => setValue('imageUrl', url)}
-              type="movies"
               errorMessage={errors.imageUrl && 'Image is Required!'}
             />
 
