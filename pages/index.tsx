@@ -3,21 +3,24 @@ import AddMovieModal from '@components/AddMovieModal';
 import Container from '@components/Container';
 import MovieList from '@components/MovieList';
 import client from '@graphql/client';
+import { MovieData } from '@graphql/commons';
 import { GET_MOVIES } from '@graphql/queries/movie.query';
 import { Movie } from '@graphql/types';
+import useMovie from '@store/useMovie';
 import useMovieModal from '@store/useMovieModal';
 import { GetStaticProps } from 'next';
 import { getPlaiceholder } from 'plaiceholder';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
-const Home: FC<{
-  data: Array<
-    Movie & {
-      blurUrl: string;
-    }
-  >;
+const Movies: FC<{
+  data: Array<MovieData>;
 }> = ({ data }) => {
   const onOpen = useMovieModal((modal) => modal.onOpen);
+  const setMovies = useMovie((e) => e.setMovies);
+
+  useEffect(() => {
+    setMovies(data);
+  }, [data, setMovies]);
 
   return (
     <Container>
@@ -28,7 +31,7 @@ const Home: FC<{
         </Button>
       </Flex>
 
-      <MovieList data={data} />
+      <MovieList />
       <AddMovieModal />
     </Container>
   );
@@ -57,4 +60,4 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default Home;
+export default Movies;

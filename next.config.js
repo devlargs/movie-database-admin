@@ -20,6 +20,7 @@ module.exports = withPlaiceholder({
       'pbs.twimg.com',
       'upload.wikimedia.org',
       'flxt.tmsimg.com',
+      'largs-movie-database.s3.amazonaws.com',
     ],
   },
 });

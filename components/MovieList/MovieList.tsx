@@ -1,5 +1,5 @@
 import { Alert, AlertIcon, Box, Grid, Tag, Text } from '@chakra-ui/react';
-import { Movie } from '@graphql/types';
+import useMovie from '@store/useMovie';
 import getFontColor from '@utils/getFontColor';
 import Image from 'next/image';
 import { FC } from 'react';
@@ -12,20 +12,16 @@ export const templateColumns = {
   xl: 'repeat(5, 1fr)',
 };
 
-const MovieList: FC<{
-  data: Array<
-    Movie & {
-      blurUrl: string;
-    }
-  >;
-}> = ({ data }) => {
+const MovieList: FC = () => {
+  const movies = useMovie((e) => e.movies);
+
   return (
     <Box mt="10" pb="10" transition="1s ease">
-      {data.length ? (
+      {movies.length ? (
         <Grid gridTemplateColumns={templateColumns} gap={5}>
-          {data.map((movie, idx) => {
+          {movies.map((movie) => {
             return (
-              <Box key={idx} data-testid="movie">
+              <Box key={movie._id} data-testid="movie">
                 <Grid
                   gridRowGap="1rem"
                   height="100%"

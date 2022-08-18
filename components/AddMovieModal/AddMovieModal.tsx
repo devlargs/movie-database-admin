@@ -1,7 +1,6 @@
 import { useMutation } from '@apollo/react-hooks';
 import {
   Button,
-  Image,
   Input,
   Modal,
   ModalBody,
@@ -12,12 +11,15 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
+import ActorsMultiSelect from '@components/ActorsMultiSelect';
 import DirectorsMultiSelect from '@components/DirectorsMultiSelect';
 import GenreMultiSelect from '@components/GenreMultiSelect';
+import UploadFile from '@components/UploadFile';
 import { CREATE_MOVIE } from '@graphql/mutations/movie.mutation';
-import { GET_MOVIES } from '@graphql/queries/movie.query';
+import useMovie from '@store/useMovie';
 import useMovieModal from '@store/useMovieModal';
-import { FC, ReactElement } from 'react';
+import { useUploadFile } from '@store/useUploadFile';
+import { FC, ReactElement, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 const AddMovieModal: FC = () => {
@@ -28,11 +30,17 @@ const AddMovieModal: FC = () => {
     control,
     handleSubmit,
     formState: { errors },
-    watch,
     reset,
+    setValue,
   } = useForm();
-  const imageUrl = watch('imageUrl');
   const [createMovie, { loading }] = useMutation(CREATE_MOVIE);
+  const { file, uploadFile, uploading } = useUploadFile(({ file, uploadFile, loading }) => ({
+    file,
+    uploadFile,
+    uploading: loading,
+  }));
+  const isLoading = useMemo(() => uploading || loading, [uploading, loading]);
+  const addMovie = useMovie((e) => e.addMovie);
 
   const closeModal = (): void => {
     reset();
@@ -40,20 +48,29 @@ const AddMovieModal: FC = () => {
   };
 
   const onSubmit = async (input): Promise<void> => {
-    try {
-      await createMovie({
-        variables: {
-          input,
-        },
-        refetchQueries: [
-          {
-            query: GET_MOVIES,
-            fetchPolicy: 'network-only',
-          },
-        ],
-      });
-    } finally {
-      closeModal();
+    if (file) {
+      try {
+        await uploadFile('movies', async (imageUrl) => {
+          const data = await fetch(`/api/hashUrl?url=${imageUrl}`);
+          const { base64: blurUrl } = await data.json();
+
+          const newInput = {
+            ...input,
+            imageUrl,
+          };
+          await createMovie({
+            variables: {
+              input: newInput,
+            },
+            onCompleted: async (data) => {
+              await fetch('/api/revalidate');
+              addMovie({ ...newInput, blurUrl, _id: data.createMovie._id });
+            },
+          });
+        });
+      } finally {
+        closeModal();
+      }
     }
   };
 
@@ -97,12 +114,29 @@ const AddMovieModal: FC = () => {
             />
             {errors.genres && <Text variant="error">Genre is required</Text>}
 
-            <Input placeholder="Image Url" mb={3} {...register('imageUrl', { required: true })} />
-            {errors.imageUrl && <Text variant="error">Image Url is Required</Text>}
-            {imageUrl && <Image src={imageUrl} alt="Director's Image" w={'100%'} h="400px" transition="1s ease-in" />}
+            <Controller
+              control={control}
+              name="actors"
+              rules={{ required: true }}
+              render={({ field: { onChange } }): ReactElement => (
+                <ActorsMultiSelect
+                  onChange={(actors): void => {
+                    onChange(actors.map((actor) => actor.value));
+                  }}
+                />
+              )}
+            />
+            {errors.genres && <Text variant="error">Genre is required</Text>}
+
+            <UploadFile
+              label="Movie Poster"
+              callback={(url): void => setValue('imageUrl', url)}
+              errorMessage={errors.imageUrl && 'Movie Poster is Required!'}
+              register={register('imageUrl', { required: true })}
+            />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" type="submit" isLoading={loading}>
+            <Button colorScheme="teal" type="submit" isLoading={isLoading}>
               Submit
             </Button>
           </ModalFooter>
