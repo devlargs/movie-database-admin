@@ -62,7 +62,8 @@ const AddMovieModal: FC = () => {
             variables: {
               input: newInput,
             },
-            onCompleted: (data) => {
+            onCompleted: async (data) => {
+              await fetch('/api/revalidate');
               addMovie({ ...newInput, blurUrl, _id: data.createMovie._id });
             },
           });
