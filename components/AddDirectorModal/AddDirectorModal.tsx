@@ -90,11 +90,11 @@ const AddDirectorModal: FC = () => {
             <Input placeholder="Last Name" mb={3} {...register('lastName', { required: true })} disabled={isLoading} />
             {errors.lastName && <Text variant="error">Last Name is Required</Text>}
 
-            <Input mb={3} {...register('imageUrl', { required: true })} display="none" />
             <UploadFile
               label="Photo"
               callback={(url): void => setValue('imageUrl', url)}
               errorMessage={errors.imageUrl && 'Image is Required!'}
+              register={register('imageUrl', { required: true })}
             />
           </ModalBody>
           <ModalFooter>

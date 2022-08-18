@@ -1,13 +1,15 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Input, Text } from '@chakra-ui/react';
 import { useUploadFile } from '@store/useUploadFile';
 import Image from 'next/image';
 import { FC, useEffect } from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
 const UploadFile: FC<{
   label: string;
   callback?: (imgUrl: string) => void;
   errorMessage?: string;
-}> = ({ label, callback, errorMessage }) => {
+  register?: UseFormRegisterReturn;
+}> = ({ label, callback, errorMessage, register }) => {
   const [localFile, setLocalFile, base64Image, loading] = useUploadFile((e) => [
     e.file,
     e.setFile,
@@ -33,22 +35,25 @@ const UploadFile: FC<{
   }, [setLocalFile]);
 
   return (
-    <Box pos="relative">
-      <Text fontSize="sm" mb="3px">
-        {label}
-      </Text>
-      <input type="file" onChange={onChange} disabled={loading} />
-      {errorMessage && !localFile && (
-        <Text mt="4px" variant="error">
-          {errorMessage}
+    <>
+      {register && <Input display="none" {...register} />}
+      <Box pos="relative">
+        <Text fontSize="sm" mb="3px">
+          {label}
         </Text>
-      )}
-      {base64Image && (
-        <Box mt={3}>
-          <Image width={260} height={360} alt="image preview" src={base64Image} />
-        </Box>
-      )}
-    </Box>
+        <input type="file" onChange={onChange} disabled={loading} />
+        {errorMessage && !localFile && (
+          <Text mt="4px" variant="error">
+            {errorMessage}
+          </Text>
+        )}
+        {base64Image && (
+          <Box mt={3}>
+            <Image width={260} height={360} alt="image preview" src={base64Image} />
+          </Box>
+        )}
+      </Box>
+    </>
   );
 };
 
