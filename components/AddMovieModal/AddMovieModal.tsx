@@ -12,6 +12,7 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
+import ActorsMultiSelect from '@components/ActorsMultiSelect';
 import DirectorsMultiSelect from '@components/DirectorsMultiSelect';
 import GenreMultiSelect from '@components/GenreMultiSelect';
 import UploadFile from '@components/UploadFile';
@@ -93,6 +94,20 @@ const AddMovieModal: FC = () => {
                 <GenreMultiSelect
                   onChange={(genres): void => {
                     onChange(genres.map((genre) => genre.value));
+                  }}
+                />
+              )}
+            />
+            {errors.genres && <Text variant="error">Genre is required</Text>}
+
+            <Controller
+              control={control}
+              name="actors"
+              rules={{ required: true }}
+              render={({ field: { onChange } }): ReactElement => (
+                <ActorsMultiSelect
+                  onChange={(actors): void => {
+                    onChange(actors.map((actor) => actor.value));
                   }}
                 />
               )}
