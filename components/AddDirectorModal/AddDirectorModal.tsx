@@ -45,9 +45,7 @@ const AddDirectorModal: FC = () => {
     reset();
   };
 
-  const isLoading = useMemo(() => {
-    return uploading || loading;
-  }, [uploading, loading]);
+  const isLoading = useMemo(() => uploading || loading, [uploading, loading]);
 
   const onSubmit = async (input: DirectorInput): Promise<void> => {
     if (file) {

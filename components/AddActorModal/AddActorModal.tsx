@@ -1,7 +1,6 @@
 import { useMutation } from '@apollo/react-hooks';
 import {
   Button,
-  Image,
   Input,
   Modal,
   ModalBody,
@@ -12,11 +11,13 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
+import UploadFile from '@components/UploadFile';
 import { CREATE_ACTOR } from '@graphql/mutations/actor.mutation';
 import useActor from '@store/useActor';
 import useActorModal from '@store/useActorModal';
+import { useUploadFile } from '@store/useUploadFile';
 import { Actor } from 'graphql/types';
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 type ActorInput = Omit<Actor, '_id'>;
@@ -27,31 +28,44 @@ const AddActorModal: FC = () => {
     handleSubmit,
     formState: { errors },
     reset,
-    watch,
+    setValue,
   } = useForm();
   const onClose = useActorModal((modal) => modal.onClose);
   const isOpen = useActorModal((modal) => modal.isOpen);
   const [createActor, { loading }] = useMutation(CREATE_ACTOR);
   const addActor = useActor((actor) => actor.addActor);
-  const imageUrl = watch('imageUrl');
+  const { file, uploadFile, uploading } = useUploadFile(({ file, uploadFile, loading }) => ({
+    file,
+    uploadFile,
+    uploading: loading,
+  }));
 
   const closeModal = (): void => {
     onClose();
     reset();
   };
 
+  const isLoading = useMemo(() => uploading || loading, [uploading, loading]);
+
   const onSubmit = async (input: ActorInput): Promise<void> => {
-    try {
-      const { data } = await createActor({
-        variables: {
-          input,
-        },
-      });
-      if (data?.createActor) {
-        addActor(data.createActor);
+    if (file) {
+      try {
+        await uploadFile('actors', async (imageUrl) => {
+          const { data } = await createActor({
+            variables: {
+              input: {
+                ...input,
+                imageUrl,
+              },
+            },
+          });
+          if (data?.createActor) {
+            addActor(data.createActor);
+          }
+        });
+      } finally {
+        closeModal();
       }
-    } finally {
-      closeModal();
     }
   };
 
@@ -63,18 +77,26 @@ const AddActorModal: FC = () => {
           <ModalHeader>Add Actor</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Input placeholder="First Name" mb={3} {...register('firstName', { required: true })} />
+            <Input
+              placeholder="First Name"
+              mb={3}
+              {...register('firstName', { required: true })}
+              disabled={isLoading}
+            />
             {errors.firstName && <Text variant="error">First Name is Required</Text>}
 
-            <Input placeholder="Last Name" mb={3} {...register('lastName', { required: true })} />
+            <Input placeholder="Last Name" mb={3} {...register('lastName', { required: true })} disabled={isLoading} />
             {errors.lastName && <Text variant="error">Last Name is Required</Text>}
 
-            <Input placeholder="Image Url" mb={3} {...register('imageUrl', { required: true })} />
-            {errors.imageUrl && <Text variant="error">Image Url is Required</Text>}
-            {imageUrl && <Image src={imageUrl} alt="Director's Image" w={'100%'} h="400px" transition="1s ease-in" />}
+            <UploadFile
+              label="Photo"
+              callback={(url): void => setValue('imageUrl', url)}
+              errorMessage={errors.imageUrl && 'Image is Required!'}
+              register={register('imageUrl', { required: true })}
+            />
           </ModalBody>
           <ModalFooter>
-            <Button type="submit" colorScheme="teal" isLoading={loading}>
+            <Button type="submit" colorScheme="teal" isLoading={isLoading}>
               Submit
             </Button>
           </ModalFooter>
