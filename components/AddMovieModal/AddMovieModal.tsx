@@ -17,6 +17,7 @@ import GenreMultiSelect from '@components/GenreMultiSelect';
 import UploadFile from '@components/UploadFile';
 import { CREATE_MOVIE } from '@graphql/mutations/movie.mutation';
 import { GET_MOVIES } from '@graphql/queries/movie.query';
+import useMovie from '@store/useMovie';
 import useMovieModal from '@store/useMovieModal';
 import { useUploadFile } from '@store/useUploadFile';
 import { FC, ReactElement, useMemo } from 'react';
@@ -40,6 +41,7 @@ const AddMovieModal: FC = () => {
     uploading: loading,
   }));
   const isLoading = useMemo(() => uploading || loading, [uploading, loading]);
+  const addMovie = useMovie((e) => e.addMovie);
 
   const closeModal = (): void => {
     reset();
@@ -50,12 +52,13 @@ const AddMovieModal: FC = () => {
     if (file) {
       try {
         await uploadFile('movies', async (imageUrl) => {
+          const newInput = {
+            ...input,
+            imageUrl,
+          };
           await createMovie({
             variables: {
-              input: {
-                ...input,
-                imageUrl,
-              },
+              input: newInput,
             },
             refetchQueries: [
               {
@@ -64,6 +67,7 @@ const AddMovieModal: FC = () => {
               },
             ],
           });
+          addMovie(newInput);
         });
       } finally {
         closeModal();
