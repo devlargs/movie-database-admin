@@ -19,9 +19,9 @@ const MovieList: FC = () => {
     <Box mt="10" pb="10" transition="1s ease">
       {movies.length ? (
         <Grid gridTemplateColumns={templateColumns} gap={5}>
-          {movies.map((movie, idx) => {
+          {movies.map((movie) => {
             return (
-              <Box key={idx} data-testid="movie">
+              <Box key={movie._id} data-testid="movie">
                 <Grid
                   gridRowGap="1rem"
                   height="100%"

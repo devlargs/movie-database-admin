@@ -57,6 +57,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       data: plaiceholders,
     },
+    revalidate: 30,
   };
 };
 

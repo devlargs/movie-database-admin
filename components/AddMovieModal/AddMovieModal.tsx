@@ -16,7 +16,6 @@ import DirectorsMultiSelect from '@components/DirectorsMultiSelect';
 import GenreMultiSelect from '@components/GenreMultiSelect';
 import UploadFile from '@components/UploadFile';
 import { CREATE_MOVIE } from '@graphql/mutations/movie.mutation';
-import { GET_MOVIES } from '@graphql/queries/movie.query';
 import useMovie from '@store/useMovie';
 import useMovieModal from '@store/useMovieModal';
 import { useUploadFile } from '@store/useUploadFile';
@@ -52,6 +51,9 @@ const AddMovieModal: FC = () => {
     if (file) {
       try {
         await uploadFile('movies', async (imageUrl) => {
+          const data = await fetch(`/api/hashUrl?url=${imageUrl}`);
+          const { base64: blurUrl } = await data.json();
+
           const newInput = {
             ...input,
             imageUrl,
@@ -60,14 +62,10 @@ const AddMovieModal: FC = () => {
             variables: {
               input: newInput,
             },
-            refetchQueries: [
-              {
-                query: GET_MOVIES,
-                fetchPolicy: 'network-only',
-              },
-            ],
+            onCompleted: (data) => {
+              addMovie({ ...newInput, blurUrl, _id: data.createMovie._id });
+            },
           });
-          addMovie(newInput);
         });
       } finally {
         closeModal();

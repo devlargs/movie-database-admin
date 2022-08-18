@@ -1,12 +1,17 @@
 import { MovieData } from '@graphql/commons';
+import { Genre } from '@graphql/types';
+import useGenre from '@store/useGenre';
 import create from 'zustand';
 
 type UseMovie = {
   movies: MovieData[];
   loading: boolean;
   setMovies: (movie: MovieData[]) => void;
-  //   addActor: (actor: Actor) => void;
-  addMovie: (movie: MovieData) => void;
+  addMovie: (
+    movie: Omit<MovieData, 'genres'> & {
+      genres: string[];
+    }
+  ) => void;
 };
 
 const useMovie = create<UseMovie>((set, get) => ({
@@ -14,15 +19,14 @@ const useMovie = create<UseMovie>((set, get) => ({
   loading: false,
   setMovies: async (movies): Promise<void> => set({ movies }),
   addMovie: (movie): void => {
-    set(() => {
-      const { movies } = get();
-      return { movies: [...movies, movie] };
-    });
+    const genres = useGenre.getState().genres;
+    const newMovie: MovieData = {
+      ...movie,
+      genres: movie.genres.map((id) => genres.find((genre) => genre._id === id)) as Genre[],
+    };
+
+    set(() => ({ movies: [...get().movies, newMovie] }));
   },
-  //   addActor: (actor: Actor): void =>
-  //     set(() => ({
-  //       actors: [...get().actors, actor],
-  //     })),
 }));
 
 export default useMovie;
