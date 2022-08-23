@@ -2,7 +2,7 @@ import { API_URL } from '@constants/apiUrl';
 import fileToBase64 from '@utils/fileToBase64';
 import create from 'zustand';
 
-export type UploadFileType = 'actors' | 'directors' | 'movies';
+export type UploadFileType = 'actors' | 'directors' | 'movies' | 'tests';
 
 export const useUploadFile = create<{
   file: File | null;

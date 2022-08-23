@@ -11,6 +11,18 @@ export const GET_MOVIES = gql`
         color
       }
       imageUrl
+      imageHashUrl
+    }
+  }
+`;
+
+export const GET_MOVIE_BY_ID = gql`
+  query getMovieById($id: String!) {
+    movie(_id: $id) {
+      title
+      _id
+      imageUrl
+      imageHashUrl
     }
   }
 `;

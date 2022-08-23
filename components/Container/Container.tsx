@@ -1,8 +1,8 @@
-import { Box } from '@chakra-ui/react';
+import { Box, BoxProps } from '@chakra-ui/react';
 import DEFAULTS from '@styles/defaults';
 import { FC } from 'react';
 
-const Container: FC = ({ children }) => {
+const Container: FC<BoxProps> = ({ children, ...restProps }) => {
   return (
     <Box
       h={`calc(100vh - ${DEFAULTS.headerHeight})`}
@@ -10,6 +10,7 @@ const Container: FC = ({ children }) => {
       px={DEFAULTS.containerPaddingX}
       m="auto"
       pt={10}
+      {...restProps}
     >
       {children}
     </Box>
