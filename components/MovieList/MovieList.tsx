@@ -2,6 +2,7 @@ import { Alert, AlertIcon, Box, Grid, Tag, Text } from '@chakra-ui/react';
 import useMovie from '@store/useMovie';
 import getFontColor from '@utils/getFontColor';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
 
 export const templateColumns = {
@@ -14,6 +15,7 @@ export const templateColumns = {
 
 const MovieList: FC = () => {
   const movies = useMovie((e) => e.movies);
+  const router = useRouter();
 
   return (
     <Box mt="10" pb="10" transition="1s ease">
@@ -21,7 +23,15 @@ const MovieList: FC = () => {
         <Grid gridTemplateColumns={templateColumns} gap={5}>
           {movies.map((movie) => {
             return (
-              <Box key={movie._id} data-testid="movie">
+              <Box
+                key={movie._id}
+                data-testid="movie"
+                onClick={(): void => {
+                  if (localStorage.NEXT) {
+                    void router.push(`/movie/${movie._id}`);
+                  }
+                }}
+              >
                 <Grid
                   gridRowGap="1rem"
                   height="100%"
