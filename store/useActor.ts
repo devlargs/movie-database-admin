@@ -8,6 +8,7 @@ type UseActor = {
   loading: boolean;
   setActor: () => void;
   addActor: (actor: Actor) => void;
+  setActors: (actors: Actor[]) => void;
 };
 
 const useActor = create<UseActor>((set, get) => ({
@@ -36,6 +37,7 @@ const useActor = create<UseActor>((set, get) => ({
     set(() => ({
       actors: [...get().actors, actor],
     })),
+  setActors: (actors: Actor[]): void => set(() => ({ actors })),
 }));
 
 export default useActor;

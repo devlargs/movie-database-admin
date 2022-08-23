@@ -10,3 +10,14 @@ export const CREATE_ACTOR = gql`
     }
   }
 `;
+
+export const UPDATE_ACTOR = gql`
+  mutation updateActor($id: String!, $input: UpdateActorInput!) {
+    updateActor(_id: $id, input: $input) {
+      _id
+      imageHashUrl
+      firstName
+      lastName
+    }
+  }
+`;

@@ -1,52 +1,38 @@
-import { gql, useLazyQuery, useMutation } from '@apollo/react-hooks';
+import { useLazyQuery, useMutation } from '@apollo/react-hooks';
 import { Box, Flex, Heading, Spinner } from '@chakra-ui/react';
 import Container from '@components/Container';
 import UploadFile from '@components/UploadFile';
-import { GET_MOVIE_BY_ID } from '@graphql/queries/movie.query';
+import { UPDATE_ACTOR } from '@graphql/mutations/actor.mutation';
+import { GET_ACTOR_BY_ID } from '@graphql/queries/actor.query';
 import { useUploadFile } from '@store/useUploadFile';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-const MovieById: FC = () => {
+const ActorById: FC = () => {
   const uploadFile = useUploadFile((e) => e.uploadFile);
   const router = useRouter();
-  // const { data } = useQuery(GET_MOVIE_BY_ID, {
-  //   variables: {
-  //     id: router.query.id,
-  //     skip: !router.query.id,
-  //   },
-  // });
-
-  const [getMovie, { data }] = useLazyQuery(GET_MOVIE_BY_ID);
+  const [getActor, { data }] = useLazyQuery(GET_ACTOR_BY_ID, {
+    fetchPolicy: 'network-only',
+  });
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (router.query.id) {
-      void getMovie({
+      void getActor({
         variables: {
           id: router.query.id,
         },
       });
     }
-  }, [router.query.id, getMovie]);
+  }, [router.query.id, getActor]);
 
-  const [updateMovie, { loading }] = useMutation(gql`
-    mutation updateImage($id: String!, $imageUrl: String!) {
-      updateMovie(_id: $id, input: { imageUrl: $imageUrl }) {
-        title
-        imageHashUrl
-        actors {
-          _id
-          lastName
-        }
-      }
-    }
-  `);
+  const [updateActor, { loading }] = useMutation(UPDATE_ACTOR);
 
   return (
     <Container>
       <Flex alignItems="center" justifyContent="space-between">
-        <Heading>{data?.movie.title}</Heading>
+        <Heading>{data?.actor.title}</Heading>
       </Flex>
 
       {/* dev part */}
@@ -54,18 +40,22 @@ const MovieById: FC = () => {
         <UploadFile
           label="upload"
           callback={async (): Promise<void> => {
-            await uploadFile('movies', async (imageUrl) => {
-              await updateMovie({
+            setUploading(true);
+            await uploadFile('actors', async (imageUrl) => {
+              await updateActor({
                 variables: {
-                  id: data?.movie._id,
-                  imageUrl: imageUrl,
+                  id: data?.actor._id,
+                  input: {
+                    imageUrl,
+                  },
                 },
                 onCompleted: () => {
-                  void getMovie({
+                  void getActor({
                     variables: {
                       id: router.query.id,
                     },
                   });
+                  setUploading(false);
                 },
               });
             });
@@ -74,24 +64,24 @@ const MovieById: FC = () => {
         <h1>dev part</h1>
         <br />
         <br />
-        {loading ? (
+        {loading || uploading ? (
           <Spinner />
         ) : (
           <Flex>
-            {data?.movie.imageHashUrl && (
+            {data?.actor.imageHashUrl && (
               <Image
-                src={data.movie.imageUrl}
+                src={data.actor.imageUrl}
                 placeholder="blur"
                 width={400}
                 height={200}
-                blurDataURL={data.movie.imageHashUrl}
+                blurDataURL={data.actor.imageHashUrl}
                 alt="tanga"
               />
             )}
             <Box w={10} />
-            <img src={data?.movie.imageUrl} alt="poster" width={400} height={200} />
+            {data?.actor.imageUrl && <img src={data?.actor.imageUrl} alt="poster" width={400} height={200} />}
             <Box w={10} />
-            {data?.movie?.imageHashUrl && <img src={data.movie.imageHashUrl} width={400} height={200} />}
+            {data?.actor?.imageHashUrl && <img src={data.actor.imageHashUrl} width={400} height={200} />}
           </Flex>
         )}
       </Box>
@@ -100,4 +90,4 @@ const MovieById: FC = () => {
   );
 };
 
-export default MovieById;
+export default ActorById;

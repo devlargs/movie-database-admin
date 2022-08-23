@@ -40,6 +40,7 @@ const AddGenreForm: FC = () => {
             input,
           },
         });
+        await fetch('/api/revalidate?url=genres');
         addGenre({
           ...input,
           ...data.createGenre,

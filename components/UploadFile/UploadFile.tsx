@@ -23,9 +23,7 @@ const UploadFile: FC<{
     try {
       setLocalFile(file);
       callback?.(file.name);
-    } catch (ex) {
-      jest.fn();
-    }
+    } catch (ex) {}
   };
 
   useEffect(() => {

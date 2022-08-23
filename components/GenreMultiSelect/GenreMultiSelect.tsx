@@ -1,15 +1,13 @@
 import { Box } from '@chakra-ui/react';
 import useGenre from '@store/useGenre';
 import DEFAULTS from '@styles/defaults';
-import { FC, useEffect, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import Select from 'react-select';
 
 const GenreMultiSelect: FC<{
   onChange: (e) => void;
 }> = ({ onChange }) => {
-  const { setGenres: load, loading, genres } = useGenre();
-
-  useEffect(() => load(), [load]);
+  const { loading, genres } = useGenre();
 
   const selectData = useMemo(() => {
     return genres.map((genre) => ({
