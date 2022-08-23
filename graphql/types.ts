@@ -86,6 +86,7 @@ export type ListMovieInput = {
   actors: Scalars['String'];
   directors: Array<Scalars['String']>;
   genres: Array<Scalars['String']>;
+  imageHashUrl?: InputMaybe<Scalars['String']>;
   imageUrl: Scalars['String'];
   title?: InputMaybe<Scalars['String']>;
 };
@@ -96,6 +97,7 @@ export type Movie = {
   actors: Array<Actor>;
   directors: Array<Director>;
   genres: Array<Genre>;
+  imageHashUrl?: Maybe<Scalars['String']>;
   imageUrl: Scalars['String'];
   title: Scalars['String'];
 };
@@ -219,6 +221,7 @@ export type UpdateMovieInput = {
   actors?: InputMaybe<Array<Scalars['String']>>;
   directors?: InputMaybe<Array<Scalars['String']>>;
   genres?: InputMaybe<Array<Scalars['String']>>;
+  imageHashUrl?: InputMaybe<Scalars['String']>;
   imageUrl?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
 };

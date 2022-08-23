@@ -11,6 +11,7 @@ export const GET_MOVIES = gql`
         color
       }
       imageUrl
+      imageHashUrl
     }
   }
 `;

@@ -47,7 +47,7 @@ const MovieList: FC = () => {
                 >
                   <Image
                     src={movie.imageUrl}
-                    blurDataURL={movie.blurUrl}
+                    blurDataURL={`${movie.imageHashUrl}`}
                     height={350}
                     width={200}
                     alt={`${movie.title} Poster`}
