@@ -40,8 +40,6 @@ const MovieList: FC = () => {
                   _hover={{
                     border: `2px solid white`,
                   }}
-                  borderTopRightRadius="12px"
-                  borderTopLeftRadius="12px"
                   cursor="pointer"
                   transition="0.25s ease-in-out"
                 >

@@ -16,6 +16,7 @@ export type Actor = {
   __typename?: 'Actor';
   _id: Scalars['String'];
   firstName: Scalars['String'];
+  imageHashUrl?: Maybe<Scalars['String']>;
   imageUrl: Scalars['String'];
   lastName: Scalars['String'];
 };
@@ -64,6 +65,7 @@ export type Genre = {
 export type ListActorInput = {
   _id?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
+  imageHashUrl?: InputMaybe<Scalars['String']>;
   imageUrl?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
 };
@@ -201,6 +203,7 @@ export type QueryMoviesArgs = {
 
 export type UpdateActorInput = {
   firstName?: InputMaybe<Scalars['String']>;
+  imageHashUrl?: InputMaybe<Scalars['String']>;
   imageUrl?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
 };

@@ -41,7 +41,6 @@ export const useUploadFile = create<{
         const imageUrl = url.split('?')[0];
         callback?.(imageUrl);
       } catch (ex) {
-        jest.fn();
       } finally {
         set({ loading: false });
       }
